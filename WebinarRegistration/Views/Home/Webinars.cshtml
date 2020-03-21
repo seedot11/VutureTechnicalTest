@@ -1,0 +1,22 @@
+﻿@model IEnumerable<WebinarRegistration.Dto.WebinarRegistrantDto>
+
+@{
+    ViewBag.Title = "Webinars";
+}
+
+<div class="title">
+    <h2>Current Webinar Registrations @Html.Partial("_YearDropdown", (int)ViewBag.year)</h2>
+
+    @Html.Partial("_ExportExcel", (int)ViewBag.year)
+</div>
+
+@foreach (var webinar in Model)
+{
+    @Html.Partial("_WebinarTitle", webinar.Webinar)
+    
+    <div class="webinar">
+        @Html.Partial("_DateBox", webinar.Webinar.Date)
+    
+        @Html.Partial("_RegistrantTable", webinar.Registrants)
+    </div>
+}

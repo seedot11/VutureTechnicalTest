@@ -1,0 +1,6 @@
+﻿@model WebinarRegistration.Dto.RegistrantDto
+
+@if (!String.IsNullOrEmpty(Model.EmailAddress))
+{
+    <a href="mailto:@Model.EmailAddress">@Model.EmailAddress</a>
+}

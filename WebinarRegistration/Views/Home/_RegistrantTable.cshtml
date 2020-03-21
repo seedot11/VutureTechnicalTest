@@ -1,0 +1,20 @@
+﻿@model IEnumerable<WebinarRegistration.Dto.RegistrantDto>
+           
+<table class="webinar-table">
+    <thead>
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email address</th>
+            <th>Company</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var registrant in Model)
+        {
+            @Html.Partial("_RegistrantRow", registrant)
+        }
+    </tbody>
+</table>
+

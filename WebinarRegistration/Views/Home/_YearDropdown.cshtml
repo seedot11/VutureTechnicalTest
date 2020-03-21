@@ -1,0 +1,19 @@
+﻿@model int
+
+<select class="js-year-select">
+    <option value="">Select a year</option>
+    @for (int start = DateTime.UtcNow.Year + 1, end = DateTime.UtcNow.Year - 5; start > end; start--)
+    {
+        <option value="@start">@start</option>
+    }
+</select>
+<script>
+    $(document).ready(function () {
+        $(".js-year-select").val(@Model);
+    });
+
+    $(".js-year-select").change(function ()
+    {   
+        location.href = "/home/webinars/" + $(this).find("option:selected").val();
+    });
+</script>

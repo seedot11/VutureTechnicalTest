@@ -1,0 +1,9 @@
+﻿@model WebinarRegistration.Dto.RegistrantDto
+@using WebinarRegistration.Services.Helpers
+
+<tr>
+    <td>@HtmlHelpers.MaskPersonalData(Model.FirstName)</td>
+    <td>@Model.LastName</td>
+    <td>@Html.Partial("_EmailLink", Model)</td>
+    <td>@Model.CompanyName</td>
+</tr>

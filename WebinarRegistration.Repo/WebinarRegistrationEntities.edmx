@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WebinarRegistration.Repo.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Updated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Registrant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="250" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Updated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Webinar">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Updated" Type="datetime" Nullable="false" />
+          <Property Name="Year" Type="int" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="WebinarRegistrant">
+          <Key>
+            <PropertyRef Name="WebinarId" />
+            <PropertyRef Name="RegistrantId" />
+          </Key>
+          <Property Name="WebinarId" Type="int" Nullable="false" />
+          <Property Name="RegistrantId" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Registrant_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Registrant" Type="Self.Registrant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Registrant">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebinarRegistrant_Registrant">
+          <End Role="Registrant" Type="Self.Registrant" Multiplicity="1" />
+          <End Role="WebinarRegistrant" Type="Self.WebinarRegistrant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Registrant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WebinarRegistrant">
+              <PropertyRef Name="RegistrantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebinarRegistrant_Webinar">
+          <End Role="Webinar" Type="Self.Webinar" Multiplicity="1" />
+          <End Role="WebinarRegistrant" Type="Self.WebinarRegistrant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Webinar">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WebinarRegistrant">
+              <PropertyRef Name="WebinarId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WebinarRegistrationRepoStoreContainer">
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Registrant" EntityType="Self.Registrant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Webinar" EntityType="Self.Webinar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebinarRegistrant" EntityType="Self.WebinarRegistrant" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Registrant_Company" Association="Self.FK_Registrant_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Registrant" EntitySet="Registrant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebinarRegistrant_Registrant" Association="Self.FK_WebinarRegistrant_Registrant">
+            <End Role="Registrant" EntitySet="Registrant" />
+            <End Role="WebinarRegistrant" EntitySet="WebinarRegistrant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebinarRegistrant_Webinar" Association="Self.FK_WebinarRegistrant_Webinar">
+            <End Role="Webinar" EntitySet="Webinar" />
+            <End Role="WebinarRegistrant" EntitySet="WebinarRegistrant" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WebinarRegistration.Repo" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Updated" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Registrants" Relationship="Self.FK_Registrant_Company" FromRole="Company" ToRole="Registrant" />
+        </EntityType>
+        <EntityType Name="Registrant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Updated" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_Registrant_Company" FromRole="Registrant" ToRole="Company" />
+          <NavigationProperty Name="WebinarRegistrants" Relationship="Self.FK_WebinarRegistrant_Registrant" FromRole="Registrant" ToRole="WebinarRegistrant" />
+        </EntityType>
+        <EntityType Name="Webinar">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Updated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Year" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="WebinarRegistrants" Relationship="Self.FK_WebinarRegistrant_Webinar" FromRole="Webinar" ToRole="WebinarRegistrant" />
+        </EntityType>
+        <EntityType Name="WebinarRegistrant">
+          <Key>
+            <PropertyRef Name="WebinarId" />
+            <PropertyRef Name="RegistrantId" />
+          </Key>
+          <Property Name="WebinarId" Type="Int32" Nullable="false" />
+          <Property Name="RegistrantId" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Registrant" Relationship="Self.FK_WebinarRegistrant_Registrant" FromRole="WebinarRegistrant" ToRole="Registrant" />
+          <NavigationProperty Name="Webinar" Relationship="Self.FK_WebinarRegistrant_Webinar" FromRole="WebinarRegistrant" ToRole="Webinar" />
+        </EntityType>
+        <Association Name="FK_Registrant_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Registrant" Type="Self.Registrant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Registrant">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebinarRegistrant_Registrant">
+          <End Role="Registrant" Type="Self.Registrant" Multiplicity="1" />
+          <End Role="WebinarRegistrant" Type="Self.WebinarRegistrant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Registrant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WebinarRegistrant">
+              <PropertyRef Name="RegistrantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebinarRegistrant_Webinar">
+          <End Role="Webinar" Type="Self.Webinar" Multiplicity="1" />
+          <End Role="WebinarRegistrant" Type="Self.WebinarRegistrant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Webinar">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WebinarRegistrant">
+              <PropertyRef Name="WebinarId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WebinarRegistrationEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="Registrants" EntityType="Self.Registrant" />
+          <EntitySet Name="Webinars" EntityType="Self.Webinar" />
+          <EntitySet Name="WebinarRegistrants" EntityType="Self.WebinarRegistrant" />
+          <AssociationSet Name="FK_Registrant_Company" Association="Self.FK_Registrant_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Registrant" EntitySet="Registrants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebinarRegistrant_Registrant" Association="Self.FK_WebinarRegistrant_Registrant">
+            <End Role="Registrant" EntitySet="Registrants" />
+            <End Role="WebinarRegistrant" EntitySet="WebinarRegistrants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebinarRegistrant_Webinar" Association="Self.FK_WebinarRegistrant_Webinar">
+            <End Role="Webinar" EntitySet="Webinars" />
+            <End Role="WebinarRegistrant" EntitySet="WebinarRegistrants" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WebinarRegistrationRepoStoreContainer" CdmEntityContainer="WebinarRegistrationEntities">
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="WebinarRegistration.Repo.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Registrants">
+            <EntityTypeMapping TypeName="WebinarRegistration.Repo.Registrant">
+              <MappingFragment StoreEntitySet="Registrant">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Webinars">
+            <EntityTypeMapping TypeName="WebinarRegistration.Repo.Webinar">
+              <MappingFragment StoreEntitySet="Webinar">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebinarRegistrants">
+            <EntityTypeMapping TypeName="WebinarRegistration.Repo.WebinarRegistrant">
+              <MappingFragment StoreEntitySet="WebinarRegistrant">
+                <ScalarProperty Name="WebinarId" ColumnName="WebinarId" />
+                <ScalarProperty Name="RegistrantId" ColumnName="RegistrantId" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

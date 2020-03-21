@@ -1,0 +1,27 @@
+﻿* { margin: 0; padding: 0; text-indent: 0; font-weight:400; font-size:12px;}
+body {background:#ebf0f9;color: #003768;font:12px/1.35 Georgia, serif; padding-bottom:5em;}
+a[href] {color:#00b4da;}
+table { width: 100%; border-collapse:collapse;}
+    table th, table td { text-align: left; padding: 0.3em; width:25%; }
+    table th { font-weight:800; border-bottom: 1px solid #00b4da; }
+    
+h2 { font-size: 2em; line-height: 100px; vertical-align: middle; }
+    h2 b { color: #00b4da;font-size: 1em; }
+
+header { background: #bbd9e6;padding-top: 5em;padding-left: 2em; }
+    header img { display: block; }
+
+.wrapper { width: 75%; max-width: 900px; margin: 0 auto; }
+
+.webinar { position: relative; }
+
+.title { position: relative; }
+    .title .export-excel { position: absolute; top: 1em; right: 0;}
+
+.webinar-table { margin-left: 7em; width: 75%; }
+    
+.webinar-title { background: #dedede; padding: 1em 1.3em; color: #00b4da; margin: 1em 0;}
+    .webinar-title b { color: #003768; margin-left: 1em; }
+
+.date-decorator { position: absolute;padding-top: 1em; width: 6em; height: 7em; background:#003768;color:#fff;text-align:center;line-height:1em;}
+    .date-decorator-day { font-size:3.5em; line-height:1em; display:block;}
